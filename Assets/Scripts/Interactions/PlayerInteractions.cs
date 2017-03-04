@@ -7,15 +7,22 @@ public class PlayerInteractions : MonoBehaviour {
 
     public Transform cameraYaw;
     public Text interactionText;
+    public GameObject talkPanel;
 
-    private string interactionUIText = "Press E to interact";
+    private bool talking = false;
 
     void Start () {
-		
+        Cursor.visible = false;
 	}
 	
 	void Update () {
-        FindObjectInMiddle();
+        if (talking)
+        {
+
+        } else
+        {
+            FindObjectInMiddle();
+        }
 	}
 
     private void FindObjectInMiddle()
@@ -48,5 +55,13 @@ public class PlayerInteractions : MonoBehaviour {
         {
             target.Interact();
         }
+    }
+
+    public void Talk()
+    {
+        Cursor.visible = true;
+        interactionText.enabled = false;
+        talking = true;
+        talkPanel.SetActive(true);
     }
 }
