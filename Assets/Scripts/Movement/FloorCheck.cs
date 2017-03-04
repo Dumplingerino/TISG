@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class FloorCheck : MonoBehaviour {
 
-    private bool onFloor = false;
+    private int  onFloor = 0;
 
     public bool OnFloor
     {
         get
         {
-            return onFloor;
+            return onFloor > 0;
         }
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        onFloor = true;
+        onFloor++;
     }
 
     public void OnTriggerExit(Collider other)
     {
-        onFloor = false;
+        onFloor--;
     }
 }
