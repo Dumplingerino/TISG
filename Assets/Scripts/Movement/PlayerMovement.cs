@@ -8,9 +8,11 @@ public class PlayerMovement : MonoBehaviour {
     public Transform cameraControl;
     public Transform cameraYaw;
     public Transform cameraObject;
+    public FloorCheck floorCheck;
 
     public float movementSpeed = 300f;
     public float runSpeed = 300f;
+    public float jumpForce = 1f;
     public float horizontalLookSpeed = 100f;
     public float verticalLookSpeed = 100f;
 
@@ -43,7 +45,9 @@ public class PlayerMovement : MonoBehaviour {
     private void MovePlayer()
     {
         player.velocity = Vector3.Normalize(movementDirection) * Time.deltaTime * 
-            (movementSpeed * (1 - Input.GetAxis("Run")) + runSpeed * Input.GetAxis("Run"));
+            (movementSpeed * (1 - Input.GetAxis("Run")) + runSpeed * Input.GetAxis("Run"))
+            + Vector3.up * player.velocity.y;
+        Jump();
     }
 
     private void RotatePlayer()
@@ -78,18 +82,24 @@ public class PlayerMovement : MonoBehaviour {
 
         if (Physics.Raycast(cameraYaw.position, -cameraYaw.forward, out hit))
         {
-            if (hit.distance > distance)
-            {
-                cameraObject.localPosition = new Vector3(0, 0, -distance);
-            } else
-            {
-                cameraObject.localPosition= new Vector3(0, 0, -hit.distance + 0.1f);
-            }
+            cameraObject.localPosition = new Vector3(0, 0, -Mathf.Min(hit.distance, distance) + 0.1f);
         }
     }
 
     private void FollowPlayer(Transform follower)
     {
         follower.position = player.position;
+    }
+
+    private void Jump()
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (floorCheck.OnFloor)
+            {
+                player.AddRelativeForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+            }
+        }
+        
     }
 }
