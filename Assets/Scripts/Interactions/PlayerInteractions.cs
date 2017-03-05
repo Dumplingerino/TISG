@@ -8,6 +8,7 @@ public class PlayerInteractions : MonoBehaviour {
     public Transform cameraYaw;
     public Text interactionText;
     public GameObject talkPanel;
+    public PlayerMovement player;
 
     private bool talking = false;
 
@@ -60,8 +61,17 @@ public class PlayerInteractions : MonoBehaviour {
     public void Talk()
     {
         Cursor.visible = true;
+        player.enabled = false;
         interactionText.enabled = false;
         talking = true;
         talkPanel.SetActive(true);
+    }
+
+    public void StopTalk()
+    {
+        Cursor.visible = false;
+        player.enabled = true;
+        talking = false;
+        talkPanel.SetActive(false);
     }
 }

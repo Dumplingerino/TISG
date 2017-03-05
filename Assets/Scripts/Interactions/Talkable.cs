@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Talkable : Interactable {
 
-    public PlayerMovement player;
     public PlayerInteractions playerInteractions;
 
 	void Start () {
@@ -14,7 +13,6 @@ public class Talkable : Interactable {
     public override void Interact()
     {
         Debug.Log("Talking");
-        player.enabled = false;
         playerInteractions.Talk();
     }
 }
