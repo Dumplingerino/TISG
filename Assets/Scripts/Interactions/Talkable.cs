@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Talkable : Interactable {
 
-    public PlayerInteractions playerInteractions;
-
 	void Start () {
         UiText = "Press E to talk";
 	}
 
-    public override void Interact()
+    public override void Interact(PlayerInteractions player)
     {
         Debug.Log("Talking");
-        playerInteractions.Talk();
+        player.Talk();
     }
 }

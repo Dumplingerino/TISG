@@ -8,7 +8,7 @@ public class Destroyable : Interactable {
         UiText = "Press E to Destroy";
 	}
 
-    public override void Interact()
+    public override void Interact(PlayerInteractions player)
     {
         Destroy(this.gameObject);
     }

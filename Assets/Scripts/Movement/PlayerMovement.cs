@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
@@ -13,19 +14,17 @@ public class PlayerMovement : MonoBehaviour {
     public float movementSpeed = 300f;
     public float runSpeed = 300f;
     public float jumpForce = 1f;
+    public Settings settings;
     public float horizontalLookSpeed = 100f;
     public float verticalLookSpeed = 100f;
 
     private Vector3 movementDirection;
-    
 
-    // Use this for initialization
     void Start()
     {
         player = GetComponent<Rigidbody>();
 	}
 	
-	// Update is called once per frame
 	void Update()
     {
         FollowPlayer(cameraControl);
@@ -60,8 +59,8 @@ public class PlayerMovement : MonoBehaviour {
 
     private void RotateCamera()
     {
-        cameraControl.Rotate(0, Input.GetAxis("Mouse X") * Time.deltaTime * horizontalLookSpeed, 0);
-        cameraYaw.Rotate(-1 * Input.GetAxis("Mouse Y") * Time.deltaTime * verticalLookSpeed, 0, 0);
+        cameraControl.Rotate(0, Input.GetAxis("Mouse X") * Time.deltaTime * settings.HorizontalLookSpeed, 0);
+        cameraYaw.Rotate(-1 * Input.GetAxis("Mouse Y") * Time.deltaTime * settings.VerticalLookSpeed, 0, 0);
         ClampCameraRotation(-50, 80);
     }
 

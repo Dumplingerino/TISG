@@ -54,7 +54,7 @@ public class PlayerInteractions : MonoBehaviour {
     {
         if (Input.GetButtonDown("Interact"))
         {
-            target.Interact();
+            target.Interact(this);
         }
     }
 
@@ -74,4 +74,6 @@ public class PlayerInteractions : MonoBehaviour {
         talking = false;
         talkPanel.SetActive(false);
     }
+
+
 }
