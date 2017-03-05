@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Settings : MonoBehaviour {
 
-    private float horizontalLookSpeed = 100f;
-    private float verticalLookSpeed = 100f;
+    public float horizontalLookSpeed = 100f;
+    public float verticalLookSpeed = 100f;
 
     public float VerticalLookSpeed
     {

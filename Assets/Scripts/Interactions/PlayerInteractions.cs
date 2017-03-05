@@ -75,5 +75,8 @@ public class PlayerInteractions : MonoBehaviour {
         talkPanel.SetActive(false);
     }
 
-
+    public bool IsTalking()
+    {
+        return talking;
+    }
 }

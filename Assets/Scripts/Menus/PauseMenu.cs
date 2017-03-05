@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour {
 
     public PlayerMovement playerMovemetns;
     public PlayerInteractions playerInteractions;
     public GameObject pauseMenu;
+    public Slider mouseVertical;
+    public Slider mouseHorizontal;
+    public Settings settings;
 
     void Start () {
 		
@@ -22,11 +26,17 @@ public class PauseMenu : MonoBehaviour {
     public void Pause()
     {
         PauseUnpause(true);
+        LoadSettings();
+
     }
 
     public void Unpause()
     {
         PauseUnpause(false);
+        if (playerInteractions.IsTalking())
+        {
+            playerInteractions.Talk();
+        }
     }
 
     // Makes sure that Pause() and Unpause() do the exact same thing in the opposite way.
@@ -37,6 +47,12 @@ public class PauseMenu : MonoBehaviour {
         playerMovemetns.enabled = !state;
         pauseMenu.SetActive(state);
         Time.timeScale = state ? 0 : 1;
+    }
+
+    private void LoadSettings()
+    {
+        mouseVertical.value = settings.VerticalLookSpeed;
+        mouseHorizontal.value = settings.HorizontalLookSpeed;
     }
 
     public void QuitGame()
