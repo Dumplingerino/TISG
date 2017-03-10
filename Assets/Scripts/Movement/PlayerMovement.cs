@@ -15,8 +15,6 @@ public class PlayerMovement : MonoBehaviour {
     public float runSpeed = 300f;
     public float jumpForce = 1f;
     public Settings settings;
-    public float horizontalLookSpeed = 100f;
-    public float verticalLookSpeed = 100f;
 
     private Vector3 movementDirection;
 
