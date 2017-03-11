@@ -7,9 +7,9 @@ public class PlayerMovement : MonoBehaviour {
 
     Rigidbody player;
     public Transform cameraControl;
-    public Transform cameraYaw;
-    public Transform cameraObject;
-    public FloorCheck floorCheck;
+    private Transform cameraYaw;
+    private Transform cameraObject;
+    private FloorCheck floorCheck;
 
     public float movementSpeed = 300f;
     public float runSpeed = 300f;
@@ -21,6 +21,9 @@ public class PlayerMovement : MonoBehaviour {
     void Start()
     {
         player = GetComponent<Rigidbody>();
+        cameraYaw = cameraControl.GetChild(0);
+        cameraObject = cameraYaw.GetChild(0);
+        floorCheck = transform.GetChild(0).GetComponent<FloorCheck>();
 	}
 	
 	void Update()

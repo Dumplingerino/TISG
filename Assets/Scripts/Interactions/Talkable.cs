@@ -11,6 +11,6 @@ public class Talkable : Interactable {
     public override void Interact(PlayerInteractions player)
     {
         Debug.Log("Talking");
-        player.Talk();
+        player.Talk(true);
     }
 }

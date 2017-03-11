@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerInteractions : MonoBehaviour {
 
-    public Transform cameraYaw;
+    private Transform cameraYaw;
     public GameObject UI;
 
     private PauseMenu pauseMenu;
@@ -21,6 +21,7 @@ public class PlayerInteractions : MonoBehaviour {
         talkMenu = UI.GetComponent<TalkMenu>();
         hud = UI.GetComponent<HUD>();
         playerMovements = GetComponent<PlayerMovement>();
+        cameraYaw = playerMovements.cameraControl.GetChild(0);
 	}
 	
 	void Update () {
@@ -43,8 +44,12 @@ public class PlayerInteractions : MonoBehaviour {
             return;
         }
 
-        WhileOpen();
-        FindObjectInMiddle();
+        if (Input.GetButtonDown("Inventory"))
+            OpenInventory(true);
+        else if (Input.GetButtonDown("Cancel"))
+            Pause(true);
+        else
+            FindObjectInMiddle();
     }
 
     #region Inputs
@@ -65,18 +70,8 @@ public class PlayerInteractions : MonoBehaviour {
 
     private void WhileTalking()
     {
-        if (Input.GetButtonDown("Talking"))
+        if (Input.GetButtonDown("Interact"))
             Talk(false);
-        if (Input.GetButtonDown("Inventory"))
-            OpenInventory(true);
-        if (Input.GetButtonDown("Cancel"))
-            Pause(true);
-    }
-
-    private void WhileOpen()
-    {
-        if (Input.GetButtonDown("Talking"))
-            Talk(true);
         if (Input.GetButtonDown("Inventory"))
             OpenInventory(true);
         if (Input.GetButtonDown("Cancel"))
@@ -129,16 +124,16 @@ public class PlayerInteractions : MonoBehaviour {
         talkMenu.Talk(state);
     }
 
-    private void OpenInventory(bool state)
+    public void OpenInventory(bool state)
     {
         playerMovements.enabled = !state;
         inventoryMenu.OpenInventory(state);
     }
 
-    private void Pause(bool state)
+    public void Pause(bool state)
     {
         playerMovements.enabled = !state;
-        pauseMenu.Pause(true);
+        pauseMenu.Pause(state);
     }
 
     #endregion
