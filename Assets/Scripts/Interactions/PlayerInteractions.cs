@@ -6,25 +6,86 @@ using UnityEngine.UI;
 public class PlayerInteractions : MonoBehaviour {
 
     public Transform cameraYaw;
-    public Text interactionText;
-    public GameObject talkPanel;
-    public PlayerMovement player;
+    public GameObject UI;
 
-    private bool talking = false;
+    private PauseMenu pauseMenu;
+    private InventoryMenu inventoryMenu;
+    private TalkMenu talkMenu;
+    private PlayerMovement playerMovements;
+    private HUD hud;
 
     void Start () {
         Cursor.visible = false;
+        pauseMenu = UI.GetComponent<PauseMenu>();
+        inventoryMenu = UI.GetComponent<InventoryMenu>();
+        talkMenu = UI.GetComponent<TalkMenu>();
+        hud = UI.GetComponent<HUD>();
+        playerMovements = GetComponent<PlayerMovement>();
 	}
 	
 	void Update () {
-        if (talking)
+        hud.SetEnabled(false);
+        if (pauseMenu.Paused)
         {
-
-        } else
-        {
-            FindObjectInMiddle();
+            WhilePaused();
+            return;
         }
-	}
+
+        if (inventoryMenu.Open)
+        {
+            WhileInventory();
+            return;
+        }
+
+        if (talkMenu.Talking)
+        {
+            WhileTalking();
+            return;
+        }
+
+        WhileOpen();
+        FindObjectInMiddle();
+    }
+
+    #region Inputs
+
+    private void WhilePaused()
+    {
+        if (Input.GetButtonDown("Cancel"))
+            Pause(false);
+    }
+
+    private void WhileInventory()
+    {
+        if (Input.GetButtonDown("Inventory"))
+            OpenInventory(false);
+        if (Input.GetButtonDown("Cancel"))
+            Pause(true);
+    }
+
+    private void WhileTalking()
+    {
+        if (Input.GetButtonDown("Talking"))
+            Talk(false);
+        if (Input.GetButtonDown("Inventory"))
+            OpenInventory(true);
+        if (Input.GetButtonDown("Cancel"))
+            Pause(true);
+    }
+
+    private void WhileOpen()
+    {
+        if (Input.GetButtonDown("Talking"))
+            Talk(true);
+        if (Input.GetButtonDown("Inventory"))
+            OpenInventory(true);
+        if (Input.GetButtonDown("Cancel"))
+            Pause(true);
+    }
+
+    #endregion
+
+    #region HUD
 
     private void FindObjectInMiddle()
     {
@@ -41,12 +102,12 @@ public class PlayerInteractions : MonoBehaviour {
         if (hit.distance < 5 && hit.transform.CompareTag("Interactable"))
         {
             Interactable target = hit.transform.GetComponent<Interactable>();
-            interactionText.text = target.UiText;
-            interactionText.enabled = true;
+            hud.SetInteractionText(target.UiText);
+            hud.SetEnabled(true);
             Interact(target);
         } else
         {
-            interactionText.enabled = false;
+            hud.SetEnabled(false);
         }
     }
 
@@ -58,25 +119,27 @@ public class PlayerInteractions : MonoBehaviour {
         }
     }
 
-    public void Talk()
+    #endregion
+
+    #region Menus
+
+    public void Talk(bool state)
     {
-        Cursor.visible = true;
-        player.enabled = false;
-        interactionText.enabled = false;
-        talking = true;
-        talkPanel.SetActive(true);
+        playerMovements.enabled = !state;
+        talkMenu.Talk(state);
     }
 
-    public void StopTalk()
+    private void OpenInventory(bool state)
     {
-        Cursor.visible = false;
-        player.enabled = true;
-        talking = false;
-        talkPanel.SetActive(false);
+        playerMovements.enabled = !state;
+        inventoryMenu.OpenInventory(state);
     }
 
-    public bool IsTalking()
+    private void Pause(bool state)
     {
-        return talking;
+        playerMovements.enabled = !state;
+        pauseMenu.Pause(true);
     }
+
+    #endregion
 }
