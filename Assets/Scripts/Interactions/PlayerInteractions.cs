@@ -10,14 +10,16 @@ public class PlayerInteractions : MonoBehaviour {
 
     private PauseMenu pauseMenu;
     private InventoryMenu inventoryMenu;
+    private Inventory inventory;
     private TalkMenu talkMenu;
     private PlayerMovement playerMovements;
     private HUD hud;
-
+    
     void Start () {
         Cursor.visible = false;
         pauseMenu = UI.GetComponent<PauseMenu>();
         inventoryMenu = UI.GetComponent<InventoryMenu>();
+        inventory = GetComponent<Inventory>();
         talkMenu = UI.GetComponent<TalkMenu>();
         hud = UI.GetComponent<HUD>();
         playerMovements = GetComponent<PlayerMovement>();
@@ -52,6 +54,11 @@ public class PlayerInteractions : MonoBehaviour {
             FindObjectInMiddle();
     }
 
+    public void TakeItem(Item item)
+    {
+        inventory.AddItem(item);
+    }
+
     #region Inputs
 
     private void WhilePaused()
@@ -64,18 +71,12 @@ public class PlayerInteractions : MonoBehaviour {
     {
         if (Input.GetButtonDown("Inventory"))
             OpenInventory(false);
-        if (Input.GetButtonDown("Cancel"))
-            Pause(true);
     }
 
     private void WhileTalking()
     {
         if (Input.GetButtonDown("Interact"))
             Talk(false);
-        if (Input.GetButtonDown("Inventory"))
-            OpenInventory(true);
-        if (Input.GetButtonDown("Cancel"))
-            Pause(true);
     }
 
     #endregion
@@ -127,6 +128,7 @@ public class PlayerInteractions : MonoBehaviour {
     public void OpenInventory(bool state)
     {
         playerMovements.enabled = !state;
+        inventoryMenu.Inventory = inventory;
         inventoryMenu.OpenInventory(state);
     }
 
