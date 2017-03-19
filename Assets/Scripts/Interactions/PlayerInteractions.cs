@@ -14,12 +14,26 @@ public class PlayerInteractions : MonoBehaviour {
     private TalkMenu talkMenu;
     private PlayerMovement playerMovements;
     private HUD hud;
-    
+    //private Vector3 dropPosition;
+
+    public Inventory Inventory
+    {
+        get
+        {
+            return inventory;
+        }
+
+        set
+        {
+            inventory = value;
+        }
+    }
+
     void Start () {
         Cursor.visible = false;
         pauseMenu = UI.GetComponent<PauseMenu>();
         inventoryMenu = UI.GetComponent<InventoryMenu>();
-        inventory = GetComponent<Inventory>();
+        Inventory = GetComponent<Inventory>();
         talkMenu = UI.GetComponent<TalkMenu>();
         hud = UI.GetComponent<HUD>();
         playerMovements = GetComponent<PlayerMovement>();
@@ -57,7 +71,30 @@ public class PlayerInteractions : MonoBehaviour {
     public void TakeItem(Item item)
     {
         inventory.AddItem(item);
+        item.transform.SetParent(transform);
+        item.gameObject.SetActive(false);
     }
+
+    public void DropItem(int index)
+    {
+        if (index >= inventory.ItemList.Count)
+        {
+            return;
+        }
+        Item item = inventory.ItemList[index];
+        inventory.ItemList.Remove(item);
+        inventoryMenu.Inventory = inventory;
+        item.transform.position = cameraYaw.position + cameraYaw.forward * 1;
+        item.transform.localEulerAngles = Vector3.zero;
+        item.transform.SetParent(null);
+        item.gameObject.SetActive(true);
+    }
+
+    // TODO. When losing items in a wall becomes an issue.
+    //private Vector3 GetDropPosition()
+    //{
+    //    return Vector3.zero;
+    //}
 
     #region Inputs
 
@@ -89,6 +126,7 @@ public class PlayerInteractions : MonoBehaviour {
 
         if (Physics.Raycast(cameraYaw.position, cameraYaw.forward, out hit))
         {
+            //dropPosition = hit.point;
             InteractCheck(hit);
         }
     }
@@ -128,7 +166,7 @@ public class PlayerInteractions : MonoBehaviour {
     public void OpenInventory(bool state)
     {
         playerMovements.enabled = !state;
-        inventoryMenu.Inventory = inventory;
+        inventoryMenu.Inventory = Inventory;
         inventoryMenu.OpenInventory(state);
     }
 

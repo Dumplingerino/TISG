@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour {
 
+    public int maxSize = 4;
     [SerializeField]
     private List<Item> itemList;
 
@@ -41,5 +42,10 @@ public class Inventory : MonoBehaviour {
             output += item.name + "\n";
         }
         return output;
+    }
+
+    public bool IsFull()
+    {
+        return itemList.Count >= maxSize;
     }
 }

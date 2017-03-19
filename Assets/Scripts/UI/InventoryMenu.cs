@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryMenu : MonoBehaviour {
 
     public GameObject inventoryMenu;
+    public Sprite defaultSprite;
     private bool open = false;
     [SerializeField]
     private Inventory inventory;
+    [SerializeField]
+    private List<Image> slots = new List<Image>();
 
     public bool Open
     {
@@ -45,6 +49,16 @@ public class InventoryMenu : MonoBehaviour {
 
     private void UpdateInventory()
     {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (i < inventory.ItemList.Count)
+            {
+                slots[i].sprite = inventory.ItemList[i].sprite;
+            } else
+            {
+                slots[i].sprite = defaultSprite;
+            }
+        }
         Debug.Log(inventory.ItemNames());
     }
 }

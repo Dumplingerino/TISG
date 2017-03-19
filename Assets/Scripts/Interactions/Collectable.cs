@@ -13,6 +13,11 @@ public class Collectable : Interactable {
 
     public override void Interact(PlayerInteractions player)
     {
+        if (player.Inventory.IsFull())
+        {
+            Debug.Log("Inventory full");
+            return;
+        }
         player.TakeItem(item);
     }
 }
