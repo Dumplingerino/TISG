@@ -106,13 +106,13 @@ public class PlayerInteractions : MonoBehaviour {
 
     private void WhileInventory()
     {
-        if (Input.GetButtonDown("Inventory"))
+        if (Input.GetButtonDown("Inventory") || Input.GetButtonDown("Cancel"))
             OpenInventory(false);
     }
 
     private void WhileTalking()
     {
-        if (Input.GetButtonDown("Interact"))
+        if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Cancel"))
             Talk(false);
     }
 
