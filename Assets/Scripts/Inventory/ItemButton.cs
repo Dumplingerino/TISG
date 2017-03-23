@@ -10,22 +10,37 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField]
     private PlayerInteractions player;
     public int slotIndex;
+    [SerializeField]
+    private RectTransform descriptionPanel;
+    private Text descriptionText;
+
+    void Start()
+    {
+        descriptionText = descriptionPanel.GetChild(0).GetComponent<Text>();
+    }
+
+    void Update()
+    {
+        descriptionPanel.anchoredPosition = Input.mousePosition;
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         player.DropItem(slotIndex);
+        OnPointerEnter(eventData);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        for (int i = 0; i < eventData.hovered.Count; i++)
-        {
-            Debug.Log(eventData.hovered[i].name + " hover");
-        }
+        Item item = player.Inventory.GetItem(slotIndex);
+        if (item == null)
+            return;
+        descriptionText.text = item.description;
+        descriptionPanel.gameObject.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("No more");
+        descriptionPanel.gameObject.SetActive(false);
     }
 }

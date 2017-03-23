@@ -77,12 +77,9 @@ public class PlayerInteractions : MonoBehaviour {
 
     public void DropItem(int index)
     {
-        if (index >= inventory.ItemList.Count)
-        {
+        Item item = inventory.PopItem(index);
+        if (item == null)
             return;
-        }
-        Item item = inventory.ItemList[index];
-        inventory.ItemList.Remove(item);
         inventoryMenu.Inventory = inventory;
         item.transform.position = cameraYaw.position + cameraYaw.forward * 1;
         item.transform.localEulerAngles = Vector3.zero;

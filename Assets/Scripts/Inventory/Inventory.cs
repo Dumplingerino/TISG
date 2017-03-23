@@ -34,6 +34,23 @@ public class Inventory : MonoBehaviour {
         ItemList.Add(item);
     }
 
+    public Item PopItem(int index)
+    {
+        if (index >= itemList.Count)
+            return null;
+        Item item = itemList[index];
+        itemList.RemoveAt(index);
+        return item;
+    }
+
+    public Item GetItem(int index)
+    {
+        if (index >= itemList.Count)
+            return null;
+        Item item = itemList[index];
+        return item;
+    }
+
     public string ItemNames()
     {
         string output = "";
