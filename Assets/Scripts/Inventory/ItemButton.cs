@@ -26,16 +26,25 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        player.DropItem(slotIndex);
-        OnPointerEnter(eventData);
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            player.DropItem(slotIndex);
+            OnPointerEnter(eventData);
+        } else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         Item item = player.Inventory.GetItem(slotIndex);
         if (item == null)
+        {
+            descriptionPanel.gameObject.SetActive(false);
             return;
-        descriptionText.text = item.description;
+        }
+        descriptionText.text = item.description + "\n\nClick to drop";
         descriptionPanel.gameObject.SetActive(true);
     }
 
