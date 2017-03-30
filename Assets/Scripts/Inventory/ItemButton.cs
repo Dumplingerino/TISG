@@ -19,6 +19,11 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         descriptionText = descriptionPanel.GetChild(0).GetComponent<Text>();
     }
 
+    void OnDisable()
+    {
+        descriptionPanel.gameObject.SetActive(false);
+    }
+
     void Update()
     {
         descriptionPanel.anchoredPosition = Input.mousePosition;
